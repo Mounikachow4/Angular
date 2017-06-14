@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Link</title>
+	<style>
+	.class1{
+		
+		color:red;
+	}
+
+	</style>
+</head>
+<body>
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Directives</title>
+</head>
+<body>
+<div ng-app="myApp">
+	<div ng-controller="ctrl1">
+		
+
+		<dir1 enter leave color="yellow"></dir1>
+		<dir1 enter leave color="red"></dir1>
+		<dir1 enter leave color="green"></dir1>
+	</div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
+<script>
+	angular.module("myApp",[]);
+	angular.module("myApp").controller("ctrl1",function($scope){
+		$scope.firstname="Mrudula";
+		$scope.lastname="raps"
+		$scope.eat=function(){
+			alert("i am eating");
+		}
+		$scope.sleep=function(){
+			alert("i am sleeping");
+		}
+
+	})
+	angular.module("myApp").directive("dir1",function(){
+		return{
+		restrict:"E",
+		template:"<div>The color is: {{color}}</div>",
+
+		link:function(scope,element,attrs){
+			scope.color=attrs.color;
+			element.bind("click",function(){
+				console.log(attrs.color);
+			})
+		}
+	}
+	})
+	angular.module("myApp").directive("enter",function(){
+		return{
+		restrict:"A",
+		
+
+		link:function(scope,element,attrs){
+		
+			element.bind("mouseover",function(){
+				element.addClass("class1");
+			})
+		}
+	}
+	})
+	angular.module("myApp").directive("leave",function(){
+		return{
+		restrict:"A",
+		
+
+		link:function(scope,element,attrs){
+			
+			element.bind("mouseleave",function(){
+				element.removeClass("class1");
+			})
+		}
+	}
+	})
+</script>
+</body>
+</html>
+
+</body>
+</html>

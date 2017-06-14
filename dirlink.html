@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Directives</title>
+</head>
+<body>
+<div ng-app="myApp">
+	<div ng-controller="ctrl1">
+		First name is<input type="text" ng-model="firstname">
+		Last name is<input type="text" ng-model="lastname">
+
+		<dir1 color="firstname" work=eat()></dir1>
+		<dir1 color="lastname" work=sleep()></dir1>
+		<dir1 color="green"></dir1>
+	</div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
+<script>
+	angular.module("myApp",[]);
+	angular.module("myApp").controller("ctrl1",function($scope){
+		$scope.firstname="Mrudula";
+		$scope.lastname="raps"
+		$scope.eat=function(){
+			alert("i am eating");
+		}
+		$scope.sleep=function(){
+			alert("i am sleeping");
+		}
+
+	})
+	angular.module("myApp").directive("dir1",function(){
+		return{
+		restrict:"E",
+		template:"<div>The color is: {{color}}: <button ng-click=work()>work</div>",
+		scope:{
+			work:"&",//pass by function reference
+			color:"="
+			//--pass by model reference
+			//"@" --pass by value
+		}
+	}
+	})
+</script>
+</body>
+</html>

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	<div ng-app="app">
+		<div ng-controller="FirstCtrl">
+		<div>
+			Enter a name:<input type="text" ng-model="name">
+			Enter Age:<input type="number" ng-model="age">
+			<button ng-click="addItem()"> add Item </button>
+		</div>
+		<table border="1px">
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th>Age</th>
+					<th>ID</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-show="!!item.id" ng-repeat="item in message track by $index">
+				<td ng-hide="item.edit">{{item.name}}</td>
+				<td ng-hide="item.edit">{{item.age}}</td>
+				<td ng-hide="item.edit">{{item.id}}</td>
+				<td ng-hide="item.edit"><button ng-click="removeItem(item.id)">remove item</button></td>
+				<td ng-hide="item.edit"><button ng-click="editItem(item)">edit item</button></td>
+				<td ng-show="item.edit"><input ng-model="item.changedName" type="text"></td>
+				<td ng-show="item.edit"><input ng-model="item.changedAge"></td>
+				<td ng-show="item.edit">{{item.id}}</td>
+				<td ng-show="item.edit"><button ng-click="dontUpdate(item)">dont update</button></td>
+				<td ng-show="item.edit"><button ng-click="updateItem(item)">update item</button></td>
+				</tr>
+			</tbody>
+		    </table>
+	    </div>
+	</div>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
+	<script>
+		angular.module('app', []);
+		angular.module('app')
+		.controller('FirstCtrl', ['$scope', '$http', function($scope, $http){
+			$scope.message=[];
+			$scope.checkForObject=function(item){
+				if(Array.isArray(item) || (typeof item !== 'object'))return false;
+				else true;
+			}
+			//make a Ajax call to server// get data and invoke success method
+			//get the updated data from ajax call
+			function getData(){
+				$http({
+					url:"http://rest.learncode.academy/api/johnbob/friends/",
+					method:'GET'
+				}).success(function(data){
+					//set the model value of message if ajax call is successful
+					$scope.message=data;
+					console.log('success', data)
+				}).error(function(err){
+					console.log('error', err)
+				})
+			}
+			//first time invoke it 
+			getData();
+			// remove item-->accepting the id 
+			$scope.removeItem = function(id){
+				//id is being appended to the url
+				//http method DELETE
+				$http({
+					url:'http://rest.learncode.academy/api/johnbob/friends/' +id,
+					method:'DELETE'
+				}).success(function(data){
+					//if its successful refresh the data
+					getData();
+				}).error(function(err){
+					alert('we got an error in removeItem');
+				})
+			}
+			$scope.addItem=function(){
+				var name= $scope.name;
+				var age= $scope.age;
+				$scope.name='';
+				$scope.age='';
+				var infoToSend={
+					name:name,
+					age:age
+				}
+				//POST--> create a new record
+				//payload-->name, age
+				$http({
+					url:"http://rest.learncode.academy/api/johnbob/friends/",
+					method:'POST',
+					data:infoToSend
+				}).success(function(data){
+					//alert('new record added')
+					//refresh the data
+					console.log('success', data)
+					getData();
+				}).error(function(err){
+					alert('we got an error in addItem');
+				})
+			}
+			//changing the view showing-->input
+			$scope.editItem= function(item){
+				//item.edit= true will show the input text boxes
+				item.edit=true;
+				//create a new value changedName we make a copy of name
+				item.changedName=item.name;
+				//create a new value changedAge we make a copy of age
+				item.changedAge= item.age;
+			}
+			$scope.dontUpdate=function(item){
+				// if we have decided not to update
+				item.edit=false;
+			}
+			$scope.updateItem=function(item){
+				var changedName= item.changedName;
+				var changedAge=item.changedAge;
+				var infoToSend={
+					name:changedName,
+					age:changedAge
+				}
+				console.log(infoToSend);
+				$http({
+					url:"http://rest.learncode.academy/api/johnbob/friends/" + item.id,
+					method:'PUT',
+					data:infoToSend
+				}).success(function(data){
+					//alert('new record added')
+					//refresh the data
+					console.log('success', data)
+					getData();
+				})
+			}
+		}])
+	</script>
+</body>
+</html>

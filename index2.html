@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Angular</title>
+</head>
+<body>
+	<div ng-app="myApp">
+		<div ng-controller="ctrl1" >
+			<input type="text" ng-model="firstname">
+			<button ng-click="func1()">Click!!</button>
+			<div ng-if="flag">
+			 	to test ng-if
+			</div>
+			<div ng-show="flag">
+			 	to test ng-show
+			</div>
+			<div ng-hide="flag">
+			 	to test ng-hide
+			</div>
+
+			<button ng-click="changeTest()">Click to test</button>
+			<ul>
+			<li ng-repeat="it in arr">{{it}}</li>
+			</ul>
+			<ul>
+			<li ng-repeat="item in arr1">{{item}} <button ng-click="func2(item)">Delete</button></li>
+			</ul>
+		</div>
+	</div>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
+<script>
+	angular.module("myApp",[]);
+	angular.module("myApp").controller("ctrl1",["$scope","$http","$q",function($scope,$http,$q){
+		$scope.flag=false;
+		$scope.arr1=[];
+		$scope.func1=function(){
+			alert($scope.firstname);
+			$scope.arr1.push($scope.firstname);
+			$scope.firstname="";
+		}
+		$scope.func2=function(task){
+			var index=$scope.arr1.indexOf(task);
+			$scope.arr1.splice(index,1);
+		}
+		$scope.changeTest=function(){
+			$scope.flag=!$scope.flag;
+		}
+		$scope.arr=["hi","hello","how"];
+
+
+
+
+	}])
+</script>
+
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+<div ng-app="myApp">
+	<div ng-controller="myCtrl">
+		Enter task:<input type="text" ng-model="taskName"></br>
+		Enter priority:<input type="number" ng-model="priority">
+		<button ng-click="addTask()">Add</button>
+		<ul>
+			<li ng-repeat="item in tasks| orderBy:'priority'">
+			TaskName is:{{item.task}}, Priority is:{{item.priority}}
+			<button ng-click="removeTask(item)">Remove</button>
+			</li>
+		</ul>
+	</div>
+</div>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
+ 	<script>
+ 		angular.module("myApp", []);
+ 		angular.module("myApp").controller("myCtrl",function($scope){
+ 			$scope.tasks=[];
+ 			$scope.addTask =function(){
+ 				var Task=$scope.taskName;
+ 				var Priority=$scope.priority;
+ 				$scope.taskName="";
+ 				$scope.priority="";
+ 				var obj={
+ 					task:Task,
+ 					priority:Priority
+ 				};
+ 				$scope.tasks.push(obj);
+ 			}
+ 			$scope.removeTask=function(item){
+ 				var index=$scope.tasks.indexOf(item);
+ 				$scope.tasks.splice(index,1);
+ 			}
+ 			
+ 		})
+ 	</script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+<input type="text" id="task">
+<input type="number" id="priority">
+<button id="btn" >Add</button>
+<p id="demo">
+	
+</p>
+<script>
+var ul= document.createElement("ul");
+document.getElementById("btn").addEventListener('click', addBtn);
+function addBtn()
+{
+	
+	var textName= document.getElementById("task");
+	var priority=document.getElementById("priority");
+	var li= document.createElement("li");
+	 var liText= document.createTextNode("Task is:" + textName.value+" priority is: "+ priority.value);
+	 li.appendChild(liText);
+	 var btn= document.createElement("button")
+	 ul.appendChild(li);
+	 var ulText=document.getElementById("demo");
+	 ulText.appendChild(ul);
+	 btn.onClick=function(event){
+	 	ulText.removeChild(event.target.parentElement);
+	 }
+	 textName.value ="";
+	 priority.value ="";
+}
+</script>
+</body>
+</html>
